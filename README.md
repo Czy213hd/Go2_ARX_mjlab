@@ -150,8 +150,51 @@ uv run play Mjlab-Velocity-Flat-Go2arm \
 
 ## Deployment
 
-Deployment support is currently in progress. The deployment code and
-instructions will be open-sourced as soon as they are ready.
+Deployment support is currently in progress. The repository includes native
+MuJoCo sim-to-sim scripts for checkpoint sanity checks before real-robot
+deployment.
+
+Run a checkpoint in native MuJoCo with fixed commands:
+
+```bash
+uv run python deploy/simulation/sim2sim.py \
+  --checkpoint /path/to/model.pt \
+  --lin-vel-x 0.2 \
+  --lin-vel-y 0.0 \
+  --ang-vel-z 0.0 \
+  --ee-x 0.48 \
+  --ee-y 0.0 \
+  --ee-z 0.36
+```
+
+Run the keyboard-controlled sim-to-sim viewer:
+
+```bash
+uv run python deploy/simulation/sim2sim_keyboard.py \
+  --checkpoint /path/to/model.pt
+```
+
+Keyboard commands are read from the terminal while the MuJoCo window is used for
+visualization:
+
+```text
+W / S: base forward velocity +/-
+A / D: base lateral velocity +/-
+Q / E: base yaw velocity +/-
+I / K: EE x +/-
+J / L: EE y +/-
+U / O: EE z +/-
+R / F: EE pitch offset +/-
+T / G: EE yaw offset +/-
+Z / X: EE roll +/-
+Space: zero base velocity
+C: reset EE command
+V: print current command
+Esc or Ctrl-C: quit
+```
+
+The sim-to-sim scripts visualize the target end-effector pose and the measured
+end-effector pose in the MuJoCo viewer.
 
 ## Commands and Actions
 
@@ -175,6 +218,19 @@ files:
 src/mjlab/asset_zoo/robots/go2arm/xmls/unitree_go2/LICENSE
 src/mjlab/asset_zoo/robots/go2arm/xmls/arx_l5/LICENSE
 ```
+
+## Authors
+
+This project is maintained by:
+
+- Zhongyu Chen
+
+## Contact
+
+If you have questions, issues, or suggestions, please open a GitHub issue or
+contact the maintainer:
+
+- Email: chenzhongyu56@gmail.com
 
 ## Acknowledgments
 

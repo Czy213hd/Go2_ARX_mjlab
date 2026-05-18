@@ -14,7 +14,10 @@ from mjlab.envs import ManagerBasedRlEnv, ManagerBasedRlEnvCfg
 from mjlab.rl import MjlabOnPolicyRunner, RslRlBaseRunnerCfg, RslRlVecEnvWrapper
 from mjlab.scripts._cli import maybe_print_top_level_help
 from mjlab.tasks.registry import list_tasks, load_env_cfg, load_rl_cfg, load_runner_cls
-from mjlab.tasks.tracking.mdp import MotionCommandCfg
+try:
+  from mjlab.tasks.tracking.mdp import MotionCommandCfg
+except ModuleNotFoundError:
+  MotionCommandCfg = None  # type: ignore[assignment]
 from mjlab.utils.gpu import select_gpus
 from mjlab.utils.os import dump_yaml, get_checkpoint_path, get_wandb_checkpoint_path
 from mjlab.utils.torch import configure_torch_backends
@@ -69,8 +72,10 @@ def run_train(task_id: str, cfg: TrainConfig, log_dir: Path) -> None:
   registry_name: str | None = None
 
   # Check if this is a tracking task by checking for motion command.
-  is_tracking_task = "motion" in cfg.env.commands and isinstance(
-    cfg.env.commands["motion"], MotionCommandCfg
+  is_tracking_task = (
+    MotionCommandCfg is not None
+    and "motion" in cfg.env.commands
+    and isinstance(cfg.env.commands["motion"], MotionCommandCfg)
   )
 
   if is_tracking_task:

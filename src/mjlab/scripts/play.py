@@ -15,7 +15,10 @@ from mjlab.envs import ManagerBasedRlEnv
 from mjlab.rl import MjlabOnPolicyRunner, RslRlVecEnvWrapper
 from mjlab.scripts._cli import maybe_print_top_level_help
 from mjlab.tasks.registry import list_tasks, load_env_cfg, load_rl_cfg, load_runner_cls
-from mjlab.tasks.tracking.mdp import MotionCommandCfg
+try:
+  from mjlab.tasks.tracking.mdp import MotionCommandCfg
+except ModuleNotFoundError:
+  MotionCommandCfg = None  # type: ignore[assignment]
 from mjlab.utils.os import get_wandb_checkpoint_path
 from mjlab.utils.torch import configure_torch_backends
 from mjlab.utils.wrappers import VideoRecorder
@@ -71,8 +74,10 @@ def run_play(task_id: str, cfg: PlayConfig):
     print("[INFO]: Terminations disabled")
 
   # Check if this is a tracking task by checking for motion command.
-  is_tracking_task = "motion" in env_cfg.commands and isinstance(
-    env_cfg.commands["motion"], MotionCommandCfg
+  is_tracking_task = (
+    MotionCommandCfg is not None
+    and "motion" in env_cfg.commands
+    and isinstance(env_cfg.commands["motion"], MotionCommandCfg)
   )
 
   if is_tracking_task and cfg._demo_mode:
