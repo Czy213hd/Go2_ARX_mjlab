@@ -69,12 +69,6 @@ uv run play Mjlab-Velocity-Flat-Go2arm \
   --num-envs 1
 ```
 
-Open the Viser viewer at:
-
-```text
-http://localhost:8080
-```
-
 ## Training
 
 You can use either Weights & Biases or TensorBoard for logging. The commands
@@ -107,17 +101,6 @@ uv run train Mjlab-Velocity-Flat-Go2arm \
   --agent.logger tensorboard
 ```
 
-Example:
-
-```bash
-uv run train Mjlab-Velocity-Flat-Go2arm \
-  --env.scene.num-envs 4096 \
-  --agent.resume True \
-  --agent.load-run 2026-05-17_21-41-04 \
-  --agent.load-checkpoint model_200.pt \
-  --agent.logger tensorboard
-```
-
 ## Play a Trained Policy
 
 Play a checkpoint:
@@ -129,14 +112,6 @@ uv run play Mjlab-Velocity-Flat-Go2arm \
   --num-envs 1
 ```
 
-Example:
-
-```bash
-uv run play Mjlab-Velocity-Flat-Go2arm \
-  --checkpoint-file logs/rsl_rl/unitree_Go2arm_flat/RUN_DIRECTORY/model_1000.pt \
-  --viewer viser \
-  --num-envs 1
-```
 
 For visualization-only debugging, you can disable terminations:
 
@@ -219,17 +194,13 @@ src/mjlab/asset_zoo/robots/go2arm/xmls/unitree_go2/LICENSE
 src/mjlab/asset_zoo/robots/go2arm/xmls/arx_l5/LICENSE
 ```
 
-## Authors
 
-This project is maintained by:
-
-- Zhongyu Chen
-
-## Contact
+## Contact/Author
 
 If you have questions, issues, or suggestions, please open a GitHub issue or
 contact the maintainer:
 
+- Zhongyu Chen
 - Email: chenzhongyu56@gmail.com
 
 ## Acknowledgments
