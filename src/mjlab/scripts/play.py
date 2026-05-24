@@ -197,9 +197,20 @@ def run_play(task_id: str, cfg: PlayConfig):
     else:
 
       class PolicyRandom:
+        def __init__(self):
+          self.action = torch.zeros(action_shape, device=env.unwrapped.device)
+          self.counter = 0
+          self.hold_steps = 20
+          self.scale = 0.25
+
         def __call__(self, obs) -> torch.Tensor:
           del obs
-          return 2 * torch.rand(action_shape, device=env.unwrapped.device) - 1
+          if self.counter % self.hold_steps == 0:
+            self.action = self.scale * (
+              2 * torch.rand(action_shape, device=env.unwrapped.device) - 1
+            )
+          self.counter += 1
+          return self.action
 
       policy = PolicyRandom()
   else:
